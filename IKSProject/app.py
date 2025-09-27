@@ -6,11 +6,15 @@ from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
 import nltk
+import os
 
-# Download punkt tokenizer (required by Sumy)
-nltk.download('punkt')
+# Download punkt to local folder so Sumy can find it
+nltk_data_dir = os.path.join(os.getcwd(), "nltk_data")
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.download('punkt', download_dir=nltk_data_dir)
+nltk.data.path.append(nltk_data_dir)
 
-# Extract text from different file types
+# Extract text from different file typess
 def extract_text(file):
     if file.type == "text/plain":
         return file.getvalue().decode("utf-8")
