@@ -1,8 +1,5 @@
-
-streamlit
-PyPDF2
-python-docx
-sumy
-nltk
-transformers
-torch
+streamlit==1.49.0
+PyPDF2==3.0.1
+python-docx==1.2.0
+transformers==4.56.2
+torch==2.8.0
