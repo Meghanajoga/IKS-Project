@@ -53,8 +53,8 @@ def summarize_text(text, max_chunk=1000):
 # -------------------------------
 # Streamlit UI
 # -------------------------------
-st.set_page_config(page_title="Fast File Summarizer")
-st.title("⚡ Fast File Summarizer")
+st.set_page_config(page_title="Summarization Assistant")
+st.title("Summarization Assistant")
 
 uploaded_file = st.file_uploader("Upload PDF, DOCX, or TXT", type=["pdf", "docx", "txt"])
 
@@ -73,3 +73,4 @@ if uploaded_file is not None:
             st.text_area("Summary", summary, height=200)
     else:
         st.error("Unsupported file type or failed to extract text.")
+
