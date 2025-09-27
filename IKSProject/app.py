@@ -1,4 +1,5 @@
 import streamlit as st
+from io import StringIO
 from docx import Document
 import PyPDF2
 from transformers import pipeline
@@ -8,7 +9,7 @@ from transformers import pipeline
 # -------------------------------
 @st.cache_resource
 def load_summarizer():
-    # Using smaller, faster model
+    # Using smaller model for speed
     return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 summarizer = load_summarizer()
@@ -37,29 +38,12 @@ def extract_text(file):
         return None
 
 # -------------------------------
-# Split text into chunks
-# -------------------------------
-def split_text_into_chunks(text, chunk_size=2000):
-    paragraphs = text.split("\n")
-    chunks = []
-    current_chunk = ""
-    for para in paragraphs:
-        if len(current_chunk) + len(para) + 1 <= chunk_size:
-            current_chunk += para + "\n"
-        else:
-            chunks.append(current_chunk)
-            current_chunk = para + "\n"
-    if current_chunk:
-        chunks.append(current_chunk)
-    return chunks
-
-# -------------------------------
 # Summarize text in chunks
 # -------------------------------
-def summarize_text(text):
+def summarize_text(text, max_chunk=1000):
     summary_text = ""
-    chunks = split_text_into_chunks(text, chunk_size=2000)
-    for chunk in chunks:
+    for i in range(0, len(text), max_chunk):
+        chunk = text[i:i + max_chunk]
         summary = summarizer(
             chunk, max_length=130, min_length=50, do_sample=False
         )[0]['summary_text']
@@ -69,8 +53,8 @@ def summarize_text(text):
 # -------------------------------
 # Streamlit UI
 # -------------------------------
-st.set_page_config(page_title="Summarization Assistant")
-st.title("Summarization Assistant")
+st.set_page_config(page_title="Fast File Summarizer")
+st.title("⚡ Fast File Summarizer")
 
 uploaded_file = st.file_uploader("Upload PDF, DOCX, or TXT", type=["pdf", "docx", "txt"])
 
