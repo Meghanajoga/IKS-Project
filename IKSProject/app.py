@@ -5,6 +5,10 @@ import PyPDF2
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
+import nltk
+
+# Download punkt tokenizer (required by Sumy)
+nltk.download('punkt')
 
 # Extract text from different file types
 def extract_text(file):
